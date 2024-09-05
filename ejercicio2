@@ -1,0 +1,38 @@
+import sympy as sp
+import math
+
+x = sp.Symbol('x')
+
+f = sp.ln(x)
+
+f_primera = sp.diff(f, x)
+f_segunda = sp.diff(f_primera, x)
+f_tercera = sp.diff(f_segunda, x)
+f_cuarta = sp.diff(f_tercera, x)
+
+x_base = 1
+f_1 = f.subs(x, x_base) 
+f_primera_1 = f_primera.subs(x, x_base)  
+f_segunda_1 = f_segunda.subs(x, x_base)  
+f_tercera_1 = f_tercera.subs(x, x_base) 
+f_cuarta_1 = f_cuarta.subs(x, x_base)  
+
+x_eval = 2.5
+taylor_orden_4 = (f_1 +
+                  f_primera_1 * (x_eval - x_base) +
+                  f_segunda_1 * (x_eval - x_base)**2 / sp.factorial(2) +
+                  f_tercera_1 * (x_eval - x_base)**3 / sp.factorial(3) +
+                  f_cuarta_1 * (x_eval - x_base)**4 / sp.factorial(4))
+
+f_2_5_exacto = math.log(2.5)
+
+error_relativo = abs((f_2_5_exacto - taylor_orden_4) / f_2_5_exacto) * 100
+
+print(f"Función original: {f} = 0")
+print(f"primera Derivada  en x = 1: {f_primera_1}")
+print(f"segunda Derivada  en x = 1: {f_segunda_1}")
+print(f"tercera Derivada  en x = 1: {f_tercera_1}")
+print(f"cuarta Derivada  en x = 1: {f_cuarta_1}")
+print(f"\nValor exacto de ln(2.5): {f_2_5_exacto:.5f}")
+print(f"Valor aproximado usando la serie de Taylor: {taylor_orden_4.evalf():.5f}")
+print(f"Error  : {error_relativo:.5f}%")
