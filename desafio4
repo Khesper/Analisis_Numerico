@@ -1,1 +1,34 @@
+import sympy as sp
 
+x = sp.Symbol('x')
+
+f = 25*x**3 - 6*x**2 + 7*x - 88
+
+f_primera = sp.diff(f, x)
+f_segunda = sp.diff(f_primera, x)
+f_tercera = sp.diff(f_segunda, x)
+
+x_base = 1
+f_1 = f.subs(x, x_base)  
+f_primera_1 = f_primera.subs(x, x_base)  
+f_segunda_1 = f_segunda.subs(x, x_base)  
+f_tercera_1 = f_tercera.subs(x, x_base)  
+
+x_eval = 3
+taylor_orden_3 = (f_1 +
+                  f_primera_1 * (x_eval - x_base) +
+                  f_segunda_1 * (x_eval - x_base)**2 / sp.factorial(2) +
+                  f_tercera_1 * (x_eval - x_base)**3 / sp.factorial(3))
+
+
+f_3_exacto = f.subs(x, x_eval)
+
+error_relativo = abs((f_3_exacto - taylor_orden_3) / f_3_exacto) * 100
+
+print(f"Función original: {f} = -66")
+print(f"primer Derivada  en x = 1: {f_primera_1}")
+print(f"segunda Derivada  en x = 1: {f_segunda_1}")
+print(f"tercera Derivada  en x = 1: {f_tercera_1}")
+print(f"\nValor exacto de f(3): {f_3_exacto}")
+print(f"Valor aproximado usando la serie de Taylor: {taylor_orden_3}")
+print(f"Error relativo porcentual verdadero: {error_relativo.evalf():.5f}%")
