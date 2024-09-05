@@ -1,0 +1,37 @@
+import sympy as sp
+
+B, H, n, S = sp.symbols('B H n S')
+
+Q = (1/n) * (B * H)**(5/3) / (B + 2*H)**(2/3) * sp.sqrt(S)
+
+dQ_dn = sp.diff(Q, n)  
+dQ_dS = sp.diff(Q, S)  
+
+B_val = 20 
+H_val = 0.3 
+n_val = 0.03  
+S_val = 0.0003  
+
+n_min, n_max = 0.027, 0.033
+S_min, S_max = 0.00027, 0.00033
+
+Q_val = Q.subs({B: B_val, H: H_val, n: n_val, S: S_val})
+
+dQ_dn_val = dQ_dn.subs({B: B_val, H: H_val, n: n_val, S: S_val})
+dQ_dS_val = dQ_dS.subs({B: B_val, H: H_val, n: n_val, S: S_val})
+
+delta_n = n_max - n_min
+delta_S = S_max - S_min
+delta_Q_n = dQ_dn_val * delta_n
+delta_Q_S = dQ_dS_val * delta_S
+
+print(f"Valor de Q: {Q_val:.5f} m³/s")
+print(f"Derivada parcial de Q respecto a n: {dQ_dn_val:.5f}")
+print(f"Derivada parcial de Q respecto a S: {dQ_dS_val:.5f}")
+print(f"Cambio en Q debido a la variación en n: {delta_Q_n:.5f} m³/s")
+print(f"Cambio en Q debido a la variación en S: {delta_Q_S:.5f} m³/s")
+
+if abs(delta_Q_n) > abs(delta_Q_S):
+    print("El flujo es más sensible a la variación de n.")
+else:
+    print("El flujo es más sensible a la variación de S.")
